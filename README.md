@@ -1,10 +1,10 @@
 # extism-sqlite
 
-A `sqlite3` extension for loading extism plugins:
+A `sqlite3` extension for loading extism plugins
 
 ## Building
 
-`extism.h` and `libextism.so` (or `libextism.dylib`) should be installed already or copied into the root of the project, then:
+`libextism.so` (or `libextism.dylib`) should be installed already or copied into the root of the project, then:
 
 ```sh
 $ make
