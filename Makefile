@@ -1,5 +1,5 @@
 lib:
-	$(CC) -shared -fPIC -o libextism_sqlite.so extism_sqlite.c -lextism -L.
+	$(CC) -shared -fPIC -o libextism_sqlite3.so extism_sqlite3.c -lextism -L.
 
 clean:
-	rm -f ./libextism_sqlite.so
+	rm -f ./libextism_sqlite3.so
