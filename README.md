@@ -15,7 +15,7 @@ $ make
 Load the extism_sqlite3 plugin:
 
 ```sh
-sqlite> .load ./libextism_sqlite
+sqlite> .load ./libextism_sqlite3
 ```
 
 Load an extism plugin:
