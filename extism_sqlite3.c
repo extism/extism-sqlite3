@@ -54,7 +54,7 @@ static void ext_load(sqlite3_context *ctx, int nargs, sqlite3_value **args) {
     return;
   }
 
-  ExtismPlugin plugin = extism_plugin_register(wasm, len);
+  ExtismPlugin plugin = extism_plugin_register(wasm, len, false);
   free(wasm);
   if (plugin < 0) {
     sqlite3_result_error(ctx, "Unable to load plugin", -1);
@@ -86,9 +86,8 @@ static void ext_call(sqlite3_context *ctx, int nargs, sqlite3_value **args) {
   }
 
   ExtismSize out_len = extism_output_length(plugin);
-  uint8_t *out = sqlite3_malloc(out_len);
-  extism_output_get(plugin, out, out_len);
-  sqlite3_result_text(ctx, (const char *)out, out_len, sqlite3_free);
+  const uint8_t *out = extism_output_get(plugin);
+  sqlite3_result_text(ctx, (const char *)out, out_len, SQLITE_TRANSIENT);
 }
 
 int sqlite3_extension_init(sqlite3 *db, char **pzErrMsg,
