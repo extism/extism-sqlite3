@@ -21,13 +21,13 @@ sqlite> .load ./libextism_sqlite3
 Load an extism plugin:
 
 ```sh
-sqlite> SELECT extism_load("code.wasm");
+sqlite> SELECT extism_load("plugins/http.wasm");
 0
 ```
 
 The return value of `extism_load` is the plugin handle that should be passed to `extism_call`:
 
 ```sh
-sqlite> SELECT json_extract(extism_call(0, "count_vowels", "abcdefg"), "$.count");
-2
+sqlite> SELECT extism_call(0, "http_get", "http://example.com");
+...
 ```
