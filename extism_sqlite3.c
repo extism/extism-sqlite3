@@ -63,8 +63,6 @@ static void ext_load(sqlite3_context *ctx, int nargs, sqlite3_value **args) {
     sqlite3_result_error(ctx, "Unable to load plugin", -1);
     return;
   }
-
-  sqlite3_result_int(ctx, plugin);
 }
 
 static void ext_call(sqlite3_context *ctx, int nargs, sqlite3_value **args) {
@@ -96,6 +94,19 @@ static void ext_call(sqlite3_context *ctx, int nargs, sqlite3_value **args) {
   sqlite3_result_text(ctx, (const char *)out, out_len, SQLITE_TRANSIENT);
 }
 
+static void ext_free(sqlite3_context *ctx, int nargs, sqlite3_value **args) {
+  if (nargs < 1) {
+    sqlite3_result_error(ctx, "Expected 1 argument", -1);
+    return;
+  }
+
+  ExtismContext *context = sqlite3_user_data(ctx);
+
+  ExtismPlugin plugin = sqlite3_value_int(args[0]);
+  extism_plugin_free(context, plugin);
+  sqlite3_result_null(ctx);
+}
+
 int sqlite3_extension_init(sqlite3 *db, char **pzErrMsg,
                            const sqlite3_api_routines *pApi) {
   int rc = SQLITE_OK;
@@ -105,5 +116,7 @@ int sqlite3_extension_init(sqlite3 *db, char **pzErrMsg,
                              ext_load, NULL, NULL, (void *)extism_context_free);
   sqlite3_create_function_v2(db, "extism_call", 3, SQLITE_UTF8, context,
                              ext_call, NULL, NULL, NULL);
+  sqlite3_create_function_v2(db, "extism_free", 1, SQLITE_UTF8, context,
+                             ext_free, NULL, NULL, NULL);
   return rc;
 }

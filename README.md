@@ -10,6 +10,14 @@ A `sqlite3` extension for loading [Extism](https://github.com/extism/extism) plu
 $ make
 ```
 
+## Examples
+
+Try running an example:
+
+```sh
+$ sqlite3 < examples/http-json-github-emojis.sql
+```
+
 ## Usage
 
 Load the extism_sqlite3 plugin:
