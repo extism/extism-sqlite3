@@ -7,19 +7,6 @@
 #include <sqlite3ext.h>
 SQLITE_EXTENSION_INIT1;
 
-/*
-int sqlite3_create_function_v2(
-  sqlite3 *db,
-  const char *zFunctionName,
-  int nArg,
-  int eTextRep,
-  void *pApp,
-  void (*xFunc)(sqlite3_context*,int,sqlite3_value**),
-  void (*xStep)(sqlite3_context*,int,sqlite3_value**),
-  void (*xFinal)(sqlite3_context*),
-  void(*xDestroy)(void*)
-);*/
-
 uint8_t *read_file(const char *filename, size_t *len) {
 
   FILE *fp = fopen(filename, "rb");
@@ -32,6 +19,7 @@ uint8_t *read_file(const char *filename, size_t *len) {
 
   uint8_t *data = malloc(length);
   if (data == NULL) {
+    fclose(fp);
     return NULL;
   }
 
@@ -57,7 +45,7 @@ static void ext_load(sqlite3_context *ctx, int nargs, sqlite3_value **args) {
     return;
   }
 
-  ExtismPlugin plugin = extism_plugin_new(context, wasm, len, false);
+  ExtismPlugin plugin = extism_plugin_new(context, wasm, len, NULL, 0, false);
   free(wasm);
   if (plugin < 0) {
     sqlite3_result_error(ctx, "Unable to load plugin", -1);
